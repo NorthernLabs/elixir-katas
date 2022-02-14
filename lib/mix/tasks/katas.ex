@@ -6,6 +6,10 @@ defmodule Mix.Tasks.Katas do
 
   @impl Mix.Task
   def run(_args) do
-    Mix.Task.run("test", ["--max-failures=1", "--seed=0"])
+    Mix.Task.run("test", [
+      "--max-failures=1",
+      "--seed=0",
+      "--formatter=ElixirKatas.TestFormatter"
+    ])
   end
 end

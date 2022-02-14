@@ -8,10 +8,10 @@ defmodule ElixirKatas.PatternMatching do
   @doc """
   Given a weight in kg and a height in meters, returns the [BMI classification](https://en.wikipedia.org/wiki/Body_mass_index) as follows:
 
-  * `underweight`: when the BMI is less than 18.5
-  * `normal`: when the BMI is greater than 18.5 and less than 25
-  * `overweight`: when the BMI is between 25 and 30
-  * `obese`: when the BMI is greater than 30
+  * `underweight`: when the BMI is < 18.5
+  * `normal`: when the BMI is >= 18.5 and < 25
+  * `overweight`: when the BMI is >= 25 and < 30
+  * `obese`: when the BMI is >=- 30
 
   BMI is calculated as `weight / height ** 2`
 

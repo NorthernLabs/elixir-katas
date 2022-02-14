@@ -1,6 +1,6 @@
 # Elixir Katas
 
-Collection of short excercises to learn the [Elixir language](https://elixir-lang.org). Inspired by [lambdaclass/erlings](https://github.com/lambdaclass/erlings).
+Collection of short exercises to learn the [Elixir language](https://elixir-lang.org). Inspired by [lambdaclass/erlings](https://github.com/lambdaclass/erlings).
 
 To learn about the language syntax, please take a look at [Elixir's Getting Started guide](https://elixir-lang.org/getting-started/introduction.html).
 
