@@ -24,9 +24,12 @@ defmodule ElixirKatas.PatternMatching do
     :obese
 
   """
-  def bmi_classification(weight, height) do
-    :answer
-  end
+  def bmi_classification(weight, height), do: bmi_category(weight / (height * height))
+
+  defp bmi_category(bmi) when bmi < 18.5, do: :underweight
+  defp bmi_category(bmi) when bmi < 25, do: :normal
+  defp bmi_category(bmi) when bmi < 30, do: :overweight
+  defp bmi_category(_bmi), do: :obese
 
   @doc """
   Receives RGB values in decimal and outputs a string with the hexadecimal representation.
@@ -42,7 +45,11 @@ defmodule ElixirKatas.PatternMatching do
 
   """
   def rgb(r, g, b) do
-    :answer
+    for c <- [r, g, b], into: "" do
+      c
+      |> Integer.to_string(16)
+      |> String.pad_leading(2, "0")
+    end
   end
 
   @doc """
@@ -58,8 +65,15 @@ defmodule ElixirKatas.PatternMatching do
     false
 
   """
-  def isogram?(word) do
-    :answer
+  def isogram?(""), do: true
+  def isogram?(<<_c::utf8>>), do: true
+
+  def isogram?(<<c::utf8, rest::binary>>) do
+    if String.contains?(rest, <<c>>) do
+      false
+    else
+      isogram?(rest)
+    end
   end
 
   @doc """
@@ -77,9 +91,20 @@ defmodule ElixirKatas.PatternMatching do
     "XCI"
 
   """
-  def roman_numeral(n) do
-    :answer
-  end
+  def roman_numeral(0), do: ""
+  def roman_numeral(number) when number >= 1000, do: "M" <> roman_numeral(number - 1000)
+  def roman_numeral(number) when number >= 900, do: "CM" <> roman_numeral(number - 900)
+  def roman_numeral(number) when number >= 500, do: "D" <> roman_numeral(number - 500)
+  def roman_numeral(number) when number >= 400, do: "CD" <> roman_numeral(number - 400)
+  def roman_numeral(number) when number >= 100, do: "C" <> roman_numeral(number - 100)
+  def roman_numeral(number) when number >= 90, do: "XC" <> roman_numeral(number - 90)
+  def roman_numeral(number) when number >= 50, do: "L" <> roman_numeral(number - 50)
+  def roman_numeral(number) when number >= 40, do: "XL" <> roman_numeral(number - 40)
+  def roman_numeral(number) when number >= 10, do: "X" <> roman_numeral(number - 10)
+  def roman_numeral(number) when number >= 9, do: "IX" <> roman_numeral(number - 9)
+  def roman_numeral(number) when number >= 5, do: "V" <> roman_numeral(number - 5)
+  def roman_numeral(number) when number >= 4, do: "IV" <> roman_numeral(number - 4)
+  def roman_numeral(number) when number >= 1, do: "I" <> roman_numeral(number - 1)
 
   @doc """
   The Collatz Conjecture or `3x + 1` problem can be summarized as follows:
@@ -104,7 +129,9 @@ defmodule ElixirKatas.PatternMatching do
       7
 
   """
-  def collatz(n) do
-    :answer
-  end
+  def collatz(n) when is_integer(n) and n > 0, do: collatz(n, 0)
+
+  defp collatz(1, steps), do: steps
+  defp collatz(n, steps) when rem(n, 2) == 0, do: collatz(div(n, 2), steps + 1)
+  defp collatz(n, steps), do: collatz(n * 3 + 1, steps + 1)
 end
