@@ -18,9 +18,10 @@ defmodule ElixirKatas.Lists do
     []
 
   """
-  def reverse(list) do
-    :answer
-  end
+  def reverse(list), do: reverse(list, [])
+
+  defp reverse([], acc), do: acc
+  defp reverse([h | t], acc), do: reverse(t, [h | acc])
 
   @doc """
   Removes repeated _consecutive_ values in a list.
@@ -34,9 +35,17 @@ defmodule ElixirKatas.Lists do
     [5]
 
   """
-  def remove_consecutive_duplicates(list) do
-    :answer
-  end
+  def remove_consecutive_duplicates([]), do: []
+  def remove_consecutive_duplicates([h | t]), do: remove_consecutive_duplicates(t, [h])
+
+  defp remove_consecutive_duplicates([h | t], [h | _rest] = acc),
+    do: remove_consecutive_duplicates(t, acc)
+
+  defp remove_consecutive_duplicates([h | t], acc),
+    do: remove_consecutive_duplicates(t, [h | acc])
+
+  defp remove_consecutive_duplicates([], acc),
+    do: reverse(acc)
 
   @doc """
   Takes a list and a 2-arity function and performs a [fold left](https://en.wikipedia.org/wiki/Fold_(higher-order_function)).
@@ -52,9 +61,10 @@ defmodule ElixirKatas.Lists do
     1
 
   """
-  def foldl(list, f) do
-    :answer
-  end
+  def foldl([h | t] = list, f) when length(list) > 1, do: foldl(t, f, h)
+
+  defp foldl([], _f, acc), do: acc
+  defp foldl([h | t], f, acc), do: foldl(t, f, f.(h, acc))
 
   @doc """
   Rotates a list `n` places to the right when `n` is positive, to the left otherwise.
@@ -62,15 +72,18 @@ defmodule ElixirKatas.Lists do
   ## Examples
 
     iex> rotate([1, 2, 3, 4, 5], 2)
-    [4,5,1,2,3]
+    [4, 5, 1, 2, 3]
 
     iex> rotate([1, 2, 3, 4, 5], -1)
     [2, 3, 4, 5, 1]
 
   """
-  def rotate(list, n) do
-    :answer
-  end
+  def rotate(list, n) when abs(n) >= length(list), do: rotate(list, rem(n, length(list)))
+  def rotate(list, n) when n <= 0, do: rotate(list, -n, [])
+  def rotate(list, n), do: rotate(list, length(list) - n, [])
+
+  defp rotate(list, 0, acc), do: list ++ reverse(acc)
+  defp rotate([h | t], n, acc), do: rotate(t, n - 1, [h | acc])
 
   @doc """
   Performs [run-length encoding](https://en.wikipedia.org/wiki/Run-length_encoding) on a list.
@@ -82,9 +95,11 @@ defmodule ElixirKatas.Lists do
     [{4, :a}, {1, :b}, {2, :c}, {2, :a}, {1, :d}, {4, :e}]
 
   """
-  def rle(list) do
-    :answer
-  end
+  def rle(list), do: rle(list, [])
+
+  defp rle([], acc), do: reverse(acc)
+  defp rle([h | t], [{n, h} | rest]), do: rle(t, [{n + 1, h} | rest])
+  defp rle([h | t], acc), do: rle(t, [{1, h} | acc])
 
   @doc """
   Returns `true` if all the elements in the list satisfy the predicate (a function that returns a boolean) `pred`.
@@ -99,9 +114,11 @@ defmodule ElixirKatas.Lists do
     true
 
   """
-  def all?(list, pred) do
-    :answer
-  end
+  def all?(list, pred), do: all?(list, pred, true)
+
+  defp all?([], _pred, check), do: check
+  defp all?(_list, _pred, false), do: false
+  defp all?([h | t], pred, true), do: all?(t, pred, pred.(h))
 
   @doc """
   Returns all the elements in the given list that satisfy the predicate `pred`.
@@ -115,7 +132,15 @@ defmodule ElixirKatas.Lists do
     [10]
 
   """
-  def filter(list, pred) do
-    :answer
+  def filter(list, pred), do: filter(list, pred, [])
+
+  defp filter([], _pred, acc), do: reverse(acc)
+
+  defp filter([h | t], pred, acc) do
+    if pred.(h) do
+      filter(t, pred, [h | acc])
+    else
+      filter(t, pred, acc)
+    end
   end
 end
