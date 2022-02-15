@@ -14,6 +14,27 @@ defmodule ElixirKatas.Concurrent.ProcessRing do
   Returns the `pid()` of the first process in the ring.
   """
   def ring(n) do
-    :answer
+    Enum.reduce(1..n, :last, fn
+      _i, :last -> spawn(fn -> loop(:last) end)
+      _i, next -> spawn(fn -> loop(next) end)
+    end)
+  end
+
+  defp loop(:last) do
+    receive do
+      :stop -> exit(:normal)
+      _msg -> loop(:last)
+    end
+  end
+
+  defp loop(next) do
+    receive do
+      :stop ->
+        send(next, :stop)
+
+      msg ->
+        send(next, msg)
+        loop(next)
+    end
   end
 end

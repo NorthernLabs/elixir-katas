@@ -15,6 +15,8 @@ defmodule ElixirKatas.Concurrent.ParallelMap do
 
   """
   def pmap(list, f) do
-    :answer
+    list
+    |> Enum.map(&Task.async(fn -> f.(&1) end))
+    |> Task.await_many()
   end
 end

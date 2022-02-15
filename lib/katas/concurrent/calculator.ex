@@ -21,7 +21,7 @@ defmodule ElixirKatas.Concurrent.Calculator do
   """
   @spec start() :: calculator()
   def start do
-    :answer
+    spawn(&calculator_loop/0)
   end
 
   @doc """
@@ -29,7 +29,7 @@ defmodule ElixirKatas.Concurrent.Calculator do
   """
   @spec stop(calculator()) :: true
   def stop(calculator) do
-    :answer
+    send(calculator, :stop)
   end
 
   @doc """
@@ -43,7 +43,7 @@ defmodule ElixirKatas.Concurrent.Calculator do
   """
   @spec add(calculator(), number(), number()) :: number()
   def add(calculator, a, b) do
-    :answer
+    send_msg(calculator, {:add, a, b})
   end
 
   @doc """
@@ -57,7 +57,7 @@ defmodule ElixirKatas.Concurrent.Calculator do
   """
   @spec subtract(calculator(), number(), number()) :: number()
   def subtract(calculator, a, b) do
-    :answer
+    send_msg(calculator, {:subtract, a, b})
   end
 
   @doc """
@@ -71,7 +71,7 @@ defmodule ElixirKatas.Concurrent.Calculator do
   """
   @spec multiply(calculator(), number(), number()) :: number()
   def multiply(calculator, a, b) do
-    :answer
+    send_msg(calculator, {:multiply, a, b})
   end
 
   @doc """
@@ -85,6 +85,35 @@ defmodule ElixirKatas.Concurrent.Calculator do
   """
   @spec divide(calculator(), number(), number()) :: number()
   def divide(calculator, a, b) do
-    :answer
+    send_msg(calculator, {:divide, a, b})
+  end
+
+  defp calculator_loop do
+    receive do
+      {from, {:add, a, b}} ->
+        send(from, a + b)
+
+      {from, {:subtract, a, b}} ->
+        send(from, a - b)
+
+      {from, {:multiply, a, b}} ->
+        send(from, a * b)
+
+      {from, {:divide, a, b}} ->
+        send(from, a / b)
+
+      :stop ->
+        exit(:normal)
+    end
+
+    calculator_loop()
+  end
+
+  defp send_msg(calculator, msg) do
+    send(calculator, {self(), msg})
+
+    receive do
+      answer -> answer
+    end
   end
 end
