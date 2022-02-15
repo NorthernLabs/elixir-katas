@@ -1,5 +1,6 @@
 defmodule ElixirKatas.ListsTests do
   use ExUnit.Case, async: false
+  @moduletag :lists
 
   alias ElixirKatas.Lists
 

@@ -1,5 +1,6 @@
 defmodule ElixirKatas.PatternMatchingTest do
   use ExUnit.Case, async: false
+  @moduletag :pattern_matching
 
   alias ElixirKatas.PatternMatching
 
