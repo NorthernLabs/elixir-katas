@@ -34,11 +34,20 @@ $ mix katas
 
 and follow the instructions to get started.
 
+## Solutions
+
+If you get stuck, you can review our solutions in the [solutions](https://github.com/juanpablo-nl/elixir-katas/tree/solutions) branch:
+
+```shell
+$ git checkout solutions
+```
+
 ## Useful links
 
 ### More excercises
 
 - [Excersism's Elixir track](https://exercism.org/tracks/elixir)
+- [Distributed Systems in Erlang (advanced)](https://people.kth.se/~johanmon/dse.html)
 
 ### Guides
 
