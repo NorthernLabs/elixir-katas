@@ -15,7 +15,7 @@ defmodule Mix.Tasks.Katas do
     * `--name`, `-n` - runs a specific kata.
 
   """
-  @shortdoc "Short excercises to learn the Elixir language."
+  @shortdoc "Short exercises to learn the Elixir language."
   @preferred_cli_env :test
 
   use Mix.Task
