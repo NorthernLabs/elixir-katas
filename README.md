@@ -36,7 +36,7 @@ and follow the instructions to get started.
 
 ## Solutions
 
-If you get stuck, you can review our solutions in the [solutions](https://github.com/juanpablo-nl/elixir-katas/tree/solutions) branch:
+If you get stuck, you can review our solutions in the [solutions](https://github.com/NorthernLabs/elixir-katas/tree/solutions) branch:
 
 ```shell
 $ git checkout solutions
