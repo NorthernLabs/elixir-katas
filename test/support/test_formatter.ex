@@ -4,7 +4,7 @@ defmodule ElixirKatas.TestFormatter do
   use GenServer
 
   import ExUnit.Formatter,
-    only: [format_times: 1, format_filters: 2, format_test_failure: 5, format_test_all_failure: 5]
+    only: [format_time: 2, format_filters: 2, format_test_failure: 5, format_test_all_failure: 5]
 
   ## Callbacks
 
@@ -32,13 +32,13 @@ defmodule ElixirKatas.TestFormatter do
     {:noreply, config}
   end
 
-  def handle_cast({:suite_finished, times_us}, config) do
+  def handle_cast({:suite_finished, run_us, load_us}, config) do
     IO.write("\n\n")
-    IO.puts(format_times(times_us))
+    IO.puts(format_time(run_us, load_us))
 
     if config.slowest > 0 do
       IO.write("\n")
-      IO.puts(format_slowest_total(config, times_us.run))
+      IO.puts(format_slowest_total(config, run_us))
       IO.puts(format_slowest_times(config))
     end
 
